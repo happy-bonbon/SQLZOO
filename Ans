@@ -69,4 +69,16 @@ where w1.continent=w2.continent
 order by name)
 
 9.Difficult Questions That Utilize Techniques Not Covered In Prior Sections
+
+select name,continent,population
+from world
+where continent in (
+select continent
+from world w1
+where population >=all 
+(select population 
+from world w2
+where w1.continent=w2.continent) and population <= 25000000)
+
+
 10.Three time bigger
