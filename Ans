@@ -2,10 +2,12 @@ SELECT within SELECT Tutorial
 
 1. Bigger than Russia
 
-SELECT name FROM world
-WHERE population >
-(SELECT population FROM world
-WHERE name='Russia')
+SELECT name
+FROM world
+WHERE population > 
+   (SELECT population
+   FROM world
+   WHERE name='Russia')
 
 
 2.Richer than UK
@@ -13,30 +15,35 @@ WHERE name='Russia')
 SELECT name
 FROM world
 WHERE (gdp/population >
-(SELECT gdp/population
-FROM world
-WHERE name='United Kingdom'))
-and continent='Europe '
+   (SELECT gdp/population
+   FROM world
+   WHERE name='United Kingdom')) and continent='Europe'
 
 
 3.Neighbours of Argentina and Australia
 
 select name,continent
 from world
-where continent in (select continent from world where name in('Argentina ','Australia'))
+where continent in
+   (select continent
+   from world
+   where name in('Argentina ','Australia'))
 order by name
 
 4.Between Canada and Poland
 
 select name,population 
 from world
-where population > (select population 
-from world
-where name ='Canada ') and population < (select population 
-from world
-where name ='Poland')
+where population >
+   (select population 
+   from world
+   where name ='Canada ') and population < 
+   (select population 
+   from world
+   where name ='Poland')
 
 5.Percentages of Germany
+
 select name,
    concat((round(100 * population/
    (select population
@@ -46,43 +53,103 @@ from world
 where continent = 'Europe'
 
 6.Bigger than every country in Europe
+
 select name
 from world
-where gdp > (select max(gdp)
-from world
-where continent = 'Europe')
+where gdp > 
+   (select max(gdp)
+   from world
+   where continent = 'Europe')
 
 7.Largest in each continent
-SELECT continent, name, area FROM world x
-  WHERE area>= all
+
+SELECT continent, name, area
+FROM world x
+WHERE area>= all
     (SELECT area FROM world y
-        WHERE x.continent=y.continent
-          AND area>0)
+    WHERE x.continent=y.continent AND area>0)
 
 8.First country of each continent (alphabetically)
+
 select continent, name
 from world w1
 where name<=all
-(select name 
-from world w2 
-where w1.continent=w2.continent
-order by name)
+   (select name 
+   from world w2 
+   where w1.continent=w2.continent
+   order by name)
 
 9.Difficult Questions That Utilize Techniques Not Covered In Prior Sections
 
 select name,continent,population
 from world
-where continent in (
-select continent
-from world w1
-where population >=all 
-(select population 
-from world w2
-where w1.continent=w2.continent) and population <= 25000000)
+where continent in 
+   (select continent
+   from world w1
+   where population >=all 
+      (select population 
+      from world w2
+      where w1.continent=w2.continent) and population <= 25000000)
 
 
 10.Three time bigger
+
 select name,continent
 from world w1
-where w1.population > all (select 3*population from world w2
-where w1.continent=w2.continent and w1.population <> w2.population) 
+where w1.population > all 
+   (select 3*population
+   from world w2
+   where w1.continent=w2.continent and w1.population <> w2.population) 
+
+
+https://sqlzoo.net/wiki/SUM_and_COUNT
+
+SUM and COUNT
+
+1.Total world population
+
+SELECT SUM(population)
+FROM world
+
+2.List of continents
+
+select distinct continent
+from world
+
+3.GDP of Africa
+
+select sum(gdp)
+from world
+where continent='Africa'
+
+4.Count the big countries
+
+select count(name)
+from world
+where area>=1000000
+
+5.Baltic states population
+
+select sum(population)
+from world
+where name in ('Estonia', 'Latvia', 'Lithuania')
+
+6. Counting the countries of each continent
+
+select continent, count(name)
+from world
+group by continent 
+
+7.Counting big countries in each continent
+
+select continent, count(name)
+from world
+where population >= 10000000
+group by continent 
+
+8.Counting big continents
+
+select continent
+from world
+group by continent 
+having sum(population)>=100000000
