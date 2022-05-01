@@ -82,3 +82,7 @@ where w1.continent=w2.continent) and population <= 25000000)
 
 
 10.Three time bigger
+select name,continent
+from world w1
+where w1.population > all (select 3*population from world w2
+where w1.continent=w2.continent and w1.population <> population) 
