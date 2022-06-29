@@ -27,3 +27,4 @@ select name,
 from world
 where name in ('France', 'Germany', 'Italy');
 
+testing
