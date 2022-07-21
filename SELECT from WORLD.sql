@@ -68,4 +68,4 @@ SELECT name,
 FROM world
 where LEFT(name, 1) = LEFT(capital, 1)
     and name <> capital;
- -- 13. All the vowels
+-- 13. All the vowels
