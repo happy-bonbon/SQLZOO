@@ -3,4 +3,7 @@ update Salary
 SET sex = case
         when sex = 'f' then 'm'
         else 'f'
-    end
+    end;
+-- better version
+update Salary
+SET sex = if(sex = 'm', 'f', 'm');
