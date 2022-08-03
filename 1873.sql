@@ -7,3 +7,6 @@ select employee_id,
     end as bonus
 from Employees
 order by employee_id
+
+
+-- cross apply
